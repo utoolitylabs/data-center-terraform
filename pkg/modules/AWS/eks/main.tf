@@ -14,7 +14,7 @@ module "eks" {
   # Managed Node Groups
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
-    disk_size = 50
+    disk_size = 100
   }
 
   node_groups = {
@@ -25,7 +25,7 @@ module "eks" {
       min_capacity     = 1
 
       instance_types = var.instance_types
-      capacity_type  = "ON_DEMAND"
+      capacity_type  = "SPOT"
     }
   }
 }

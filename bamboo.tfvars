@@ -1,0 +1,68 @@
+# This file configures the Terraform for Atlassian DC on Kubernetes.
+# Please configure this file carefully before installing the infrastructure.
+# See https://github.com/atlassian-labs/data-center-terraform/blob/main/README.md for more information.
+
+# Please define the values to configure the infrastructure before install
+
+# 'environment_name' provides your environment a unique name within a single cloud provider account.
+# This value can not be altered after the configuration has been applied.
+environment_name = "ifaws-1537-2"
+
+# Cloud provider region that this configuration will deploy to.
+region = "eu-west-1"
+
+# Custom tags for all resources to be created. Please add all tags you need to propagate among the resources.
+resource_tags = {
+  Terraform = "true",
+  owner = "dev@utoolity.net",
+  environment = "ifaws-1537-2",
+  category = "data-center-testing"
+}
+
+# Instance types that is preferred for node group.
+instance_types = ["m5d.2xlarge"]
+
+# Desired number of nodes that the node group should launch with initially.
+desired_capacity = 2
+
+# (Optional) Domain name used by the ingress controller.
+# The final ingress domain is a subdomain within this domain. (eg.: environment.domain.com)
+# You can also provide a subdomain <subdomain.domain.com> and the final ingress domain will be <environment.subdomain.domain.com>.
+# When commented out, the ingress controller is not provisioned and the application is accessible over HTTP protocol (not HTTPS).
+#
+domain = "tst.utoolity.net"
+
+# RDS instance configurable attributes. Note that the allowed value of allocated storage and iops may vary based on instance type.
+# You may want to adjust these values according to your needs.
+# Documentation can be found via:
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#USER_PIOPS
+db_instance_class    = "db.t3.medium"
+db_allocated_storage = 100
+db_iops              = 0
+
+# Bamboo license
+# To avoid storing license in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_license`) and keep the below line commented out
+# If storing license as plain-text is not a concern for this environment, feel free to uncomment the following line and supply the license here
+#
+bamboo_license = "<license key>"
+
+# Bamboo system admin credentials
+# WARNING: In case you are restoring an existing dataset (see the `dataset_url` property below), you will need to use
+# credentials existing in the dataset. In this case, the `bamboo_admin_*` properties below are ignored.
+bamboo_admin_username = "admin"
+# To avoid storing system admin password in a plain text file, we recommend storing it in an environment variable prefixed with `TF_VAR_` (i.e. `TF_VAR_bamboo_admin_password`) and keep the below line commented out
+# If storing password as plain-text is not a concern for this environment, feel free to uncomment the following line and supply system admin password here
+bamboo_admin_password      = "admin"
+bamboo_admin_display_name  = "Ubot Le Bot"
+bamboo_admin_email_address = "ubot+dcapt@utoolity.net"
+
+# Number of Bamboo remote agents to launch
+number_of_bamboo_agents = 50
+
+# (Optional) URL for dataset to import
+# The provided default is the dataset used in the DCAPT framework.
+# See https://developer.atlassian.com/platform/marketplace/dc-apps-performance-toolkit-user-guide-bamboo/#2--preloading-your-bamboo-deployment-with-an-enterprise-scale-dataset
+# for details
+#
+dataset_url = "https://centaurus-datasets.s3.amazonaws.com/bamboo/dcapt-bamboo.zip"
