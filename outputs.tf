@@ -10,6 +10,7 @@ output "vpc" {
 
 output "eks" {
   description = "EKS cluster information"
+  sensitive = true
 
   value = {
     cluster_name     = module.base-infrastructure.eks.cluster_name
