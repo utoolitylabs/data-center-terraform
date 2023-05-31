@@ -180,7 +180,7 @@ create_tfstate_resources() {
     # create s3 bucket to be used for keep state of the terraform project
     log "Creating '${S3_BUCKET}' bucket for storing the terraform state..."
     if ! test -d "${STATE_FOLDER}/.terraform" ; then
-      terraform -chdir="${STATE_FOLDER}" init -no-color | tee -a "${LOG_FILE}"
+      terraform -chdir="${STATE_FOLDER}" init  | tee -a "${LOG_FILE}"
     fi
     terraform -chdir="${STATE_FOLDER}" apply -auto-approve "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
     sleep 5
@@ -192,10 +192,10 @@ create_update_infrastructure() {
   log "Starting to analyze the infrastructure..."
   if [ -n "${DIFFERENT_ENVIRONMENT}" ]; then
     log "Migrating the terraform state to S3 bucket..."
-    terraform -chdir="${ROOT_PATH}" init -migrate-state -no-color | tee -a "${LOG_FILE}"
-    terraform -chdir="${ROOT_PATH}" init -no-color | tee -a "${LOG_FILE}"
+    terraform -chdir="${ROOT_PATH}" init -migrate-state  | tee -a "${LOG_FILE}"
+    terraform -chdir="${ROOT_PATH}" init  | tee -a "${LOG_FILE}"
   fi
-  terraform -chdir="${ROOT_PATH}" apply -auto-approve -no-color "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
+  terraform -chdir="${ROOT_PATH}" apply -auto-approve  "${OVERRIDE_CONFIG_FILE}" | tee -a "${LOG_FILE}"
   terraform -chdir="${ROOT_PATH}" output -json > outputs.json
 }
 
